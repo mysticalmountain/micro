@@ -1,0 +1,38 @@
+package com.andx.micro.core.service;
+
+import com.andx.micro.api.core.chain.GenericChain;
+import com.andx.micro.api.core.dto.Request;
+import com.andx.micro.api.core.dto.Response;
+import com.andx.micro.api.core.module.service.Service;
+import com.andx.micro.api.core.module.service.ServiceException;
+import com.andx.micro.api.core.module.service.ServiceProcessor;
+import com.andx.micro.api.log.Log;
+import com.andx.micro.core.log.log4j.Log4jLogFactory;
+
+/**
+ * Created by andongxu on 17-1-4.
+ */
+public class ServiceChain extends GenericChain<Request, Response> {
+
+    private Service<Request, Response> service;
+
+    public ServiceChain(Service<Request, Response> service) {
+        this.service = service;
+    }
+
+    public Response chain(Request request, ServiceProcessor<Request, Response> processor, Object... args) {
+        try {
+            Response response = service.service(request, processor, args);
+            if (response.getSuccess() == true) {
+                if (nextChain == null) {
+                    return response;
+                } else {
+                    return nextChain.chain(request, processor, args);
+                }
+            }
+            throw new ServiceException("");
+        } catch (ServiceException e) {
+            return processor.handlerException(request, e, args);
+        }
+    }
+}

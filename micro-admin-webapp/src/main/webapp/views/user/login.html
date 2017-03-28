@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>登录</title>
+    <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/resources/bootstrap/extend/css/util.css">
+    <script src="/resources/bootstrap/extend/js/jquery-3.1.1.min.js"></script>
+    <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/resources/bootstrap/extend/js/jquery.cookie.js"></script>
+    <script src="/resources/c/user/login.js"></script>
+</head>
+
+
+<body>
+<nav id="navbar" class="navbar navbar-default" role="navigation">
+</nav>
+<ol class="breadcrumb">
+    <li>登录</a></li>
+</ol>
+<div id="success" class="alert alert-success" style="display: none;"></div>
+<div id="fail" class="alert alert-danger" style="display: none;"></div>
+<div id="loading" class="loading" style="display: none;">Loading pages...</div>
+<br/>
+<br/>
+<form class="form-horizontal" role="form">
+    <div class="form-group">
+        <label for="username" class="col-sm-2 control-label">用户名</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="username" placeholder="用户名/手机号">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">密码</label>
+        <div class="col-sm-2">
+            <input type="text" class="form-control" id="password" placeholder="密码">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+            <button type="button" id="save" class="btn btn-default">登录</button>
+        </div>
+    </div>
+</form>
+<div id="footer"></div>
+</body>
+</html>
