@@ -6,7 +6,7 @@ import com.andx.micro.api.core.dto.Response;
 import com.andx.micro.api.core.module.flowRate.FlowRate;
 import com.andx.micro.api.core.module.flowRate.FlowRateException;
 import com.andx.micro.api.core.module.flowRate.FlowRateProcessor;
-import com.andx.micro.api.core.module.service.ServiceProcessor;
+import com.andx.micro.api.core.module.service.SampleService;
 
 /**
  * Created by andongxu on 16-12-19.
@@ -21,7 +21,7 @@ public class FlowRateChain extends GenericChain<Request, Response> {
         this.flowRateProcessor = flowRateProcessor;
     }
 
-    public Response chain(Request request, ServiceProcessor<Request, Response> processor, Object... args) {
+    public Response chain(Request request, SampleService<Request, Response> processor, Object... args) {
         try {
             Response response  = flowRate.flowRate(request, flowRateProcessor, args);
             if (response.getSuccess() == true) {

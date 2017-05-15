@@ -3,10 +3,16 @@ package com.andx.micro.permission.extend.validator;
 import com.andx.micro.api.core.dto.Request;
 import com.andx.micro.api.core.dto.Response;
 import com.andx.micro.api.core.module.service.ServiceException;
-import com.andx.micro.api.core.module.service.ServiceProcessor;
+import com.andx.micro.api.core.module.service.SampleService;
+import com.andx.micro.api.core.module.service.handler.HandlerException;
+import com.andx.micro.api.core.module.service.handler.ServiceHandler;
 import com.andx.micro.api.core.module.validator.ValidatorException;
 import com.andx.micro.api.core.module.validator.ValidatorProcessor;
+import com.andx.micro.api.log.Log;
+import com.andx.micro.core.log.slf4j.Slf4jLogFactory;
+import com.andx.micro.core.validator.PermissionValidatorDto;
 import com.andx.micro.permission.dto.permission.ValidatorPermissionDto;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -14,31 +20,53 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
+
 /**
  * Created by andongxu on 17-2-21.
  */
 @Component
-public class PermissionValidatorProcessor implements ValidatorProcessor<Request, Response> {
+public class PermissionValidatorProcessor implements ValidatorProcessor<PermissionValidatorDto, Boolean> {
 
+    private Log log = Slf4jLogFactory.getLogFactory().getLog(this.getClass());
     @Autowired
-    @Qualifier("validatorPermissionService")
-    private ServiceProcessor<Request<ValidatorPermissionDto>, Response> validatorPermissionService;
+    @Qualifier("channelValidateHandler")
+    private ServiceHandler<PermissionValidatorDto, Boolean> channelValidateHandler;
+    @Autowired
+    @Qualifier("roleValidateHandler")
+    private ServiceHandler<PermissionValidatorDto, Boolean> roleValidateHandler;
+    @Autowired
+    @Qualifier("servicePermissionExistsHandler")
+    private ServiceHandler<String, Boolean> serviceValidateHandler;
 
     @Override
-    public Response process(Request request, Object... args) throws ValidatorException {
-        ValidatorPermissionDto validatorPermissionDto = new ValidatorPermissionDto();
-        validatorPermissionDto.setResourceId(request.getServiceId());
-        validatorPermissionDto.setOwnerId("10000000");
-        validatorPermissionDto.setServiceId(request.getServiceId());
-        validatorPermissionDto.setUserType(ValidatorPermissionDto.UserType.ROLE);
-        Object sourceData = request.getData();
-        request.setData(validatorPermissionDto);
+    public Boolean process(PermissionValidatorDto dto, Object... args) throws ValidatorException {
         try {
-            return validatorPermissionService.process(request);
-        } catch (ServiceException e) {
-            throw new ValidatorException(e.getMessage());
-        } finally {
-            request.setData(sourceData);
+            String serviceCode = dto.getServiceCode();
+            Boolean hasPermission = false;
+            Boolean permissionExists = serviceValidateHandler.handle(serviceCode, null);
+            if (permissionExists) {
+                HttpServletRequest httpServletRequest = (HttpServletRequest) args[0];
+                List<Long> roleIds = (List<Long>) httpServletRequest.getSession().getAttribute("roleIds");
+                for (Long roleId : roleIds) {
+                    PermissionValidatorDto permissionValidatorDto = new PermissionValidatorDto();
+                    permissionValidatorDto.setServiceCode(serviceCode);
+                    permissionValidatorDto.setOwnerId(String.valueOf(roleId));
+                    hasPermission = channelValidateHandler.handle(permissionValidatorDto, null);
+                    if (hasPermission == null || hasPermission == false) {
+                        hasPermission = roleValidateHandler.handle(permissionValidatorDto, null);
+                    }
+                    if (hasPermission != null && hasPermission == true) {
+                        break;
+                    }
+                }
+                return hasPermission == null ? false : hasPermission;
+            } else {
+                return true;
+            }
+        } catch (HandlerException e) {
+            throw new ValidatorException(e.getMessage(), e);
         }
     }
 }

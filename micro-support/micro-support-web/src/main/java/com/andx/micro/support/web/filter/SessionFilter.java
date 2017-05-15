@@ -1,5 +1,8 @@
 package com.andx.micro.support.web.filter;
 
+import com.andx.micro.support.web.service.login.NoLoginException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.*;
@@ -18,6 +21,13 @@ import java.util.regex.Pattern;
 @WebFilter(displayName = "sessionFilter", urlPatterns = "/*")
 public class SessionFilter implements Filter {
 
+    @Value("${session.filter.enable:false}")
+    private Boolean enableSessionFilter;
+
+    @Autowired(required = false)
+    private PassFilter passFilter;
+
+
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
     }
@@ -25,33 +35,40 @@ public class SessionFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 
-        HttpServletRequest req = (HttpServletRequest)request;
-        HttpSession session = req.getSession(true);
-        chain.doFilter(req, response);
+        HttpServletRequest req = (HttpServletRequest) request;
+        HttpServletResponse rsp = (HttpServletResponse) response;
+        if (enableSessionFilter) {
+            boolean isFilter = true;
+            if (passFilter == null) {
+                isFilter = false;
+            }
+//            String[] notFilterRegexs = new String[]{"^/views/user/login.html", "^/views/common/\\w+", "^/service/login", "^/resources/\\w+", "^/service/owners/\\w+/resources/\\w+"};
+            String[] notFilterRegexs = passFilter.passRegex();
+            if (notFilterRegexs != null) {
+                for (String notFilterRegex : notFilterRegexs) {
+                    Pattern pattern = Pattern.compile(notFilterRegex);
+                    Matcher matcher = pattern.matcher(req.getRequestURI());
+                    if (matcher.find()) {
+                        isFilter = false;
+                        break;
+                    }
+                }
+            } else {
+                isFilter = false;
+            }
+            if (isFilter) {
+                if (req.getSession().getAttribute("userId") == null) {
+                    throw new NoLoginException("no session or session timeout");
+                } else {
+                    chain.doFilter(req, rsp);
+                }
+            } else {
+                chain.doFilter(req, rsp);
+            }
+        } else {
+            chain.doFilter(req, rsp);
+        }
 
-//        HttpServletRequest req = (HttpServletRequest) request;
-//        HttpServletResponse rsp = (HttpServletResponse) response;
-//        String uri = req.getRequestURI();
-//        String [] notFilterRegexs = new String[] {"^/views/user/login.html", "^/views/common/\\w+", "^/user/login", "^/resources/\\w+"};
-//        boolean isFilter = true;
-//        for (String notFilterRegex : notFilterRegexs) {
-//            Pattern pattern = Pattern.compile(notFilterRegex);
-//            Matcher matcher = pattern.matcher(req.getRequestURI());
-//            if (matcher.find()) {
-//                isFilter = false;
-//                break;
-//            }
-//        }
-//        if (isFilter) {
-//            if (req.getSession().getAttribute("userId") == null) {
-//                rsp.sendRedirect("/views/user/login.html");
-//            } else {
-//                chain.doFilter(req, rsp);
-//            }
-//        } else {
-//            chain.doFilter(req, rsp);
-
-//        }
     }
 
     @Override

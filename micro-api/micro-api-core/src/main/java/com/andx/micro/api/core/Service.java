@@ -11,6 +11,22 @@ import java.lang.annotation.*;
 public @interface Service {
 
     /**
+     * 资源路径
+     * @return
+     */
+    String path() default "";
+
+    /**
+     * GET
+     * POST
+     * PUT
+     * DELETE
+     * PATCH
+     * @return
+     */
+    String method() default "GET";
+
+    /**
      * 代码
      * @return
      */

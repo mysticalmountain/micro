@@ -12,20 +12,20 @@ $(document).ready(function () {
     var dataJson = JSON.stringify(reqData);
     $('#loading').show();
     $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: "http://www.micro.com:8081/service/queryUser",
-        data: dataJson,
-        dataType: 'json',
+        type: "GET",
+        url: "http://www.micro.com/user/service/users",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Accept", "application/json; charset=utf-8");
+        },
+        xhrFields: {
+            withCredentials: true
+        },
         crossDomain: true,
-        success: function (data){
+        // data: dataJson,
+        dataType: 'json',
+        success: function (data) {
             $("#success").hide();
             $("#fail").hide();
-            alert('ok');
-            if (data.status == 302) {
-                alert('302');
-                location.href = data.location;
-            }
             if (data.success == false) {
                 $("#fail").html(data.errorMessage);
                 $("#fail").show();
@@ -46,10 +46,10 @@ $(document).ready(function () {
                     };
                     var dataJson = JSON.stringify(reqData);
                     $.ajax({
-                        type: "POST",
+                        type: "DELETE",
                         contentType: "application/json",
-                        url: "http://www.micro.com:8081/service/deleteUser",
-                        data: dataJson,
+                        url: "http://www.micro.com/user/service/users/" + $(this).val(),
+                        // data: dataJson,
                         dataType: 'json',
                         success: function (data) {
                             $("#success").hide();

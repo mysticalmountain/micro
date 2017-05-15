@@ -4,6 +4,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
+
 import com.andx.micro.support.jpa.model.Entity;
 
 /**
@@ -37,14 +38,12 @@ public class Service extends Entity {
     @Column(length = 8)
     private String module;
 
-    @Column(length = 1)
-    private Boolean isWriteLog;
+    @Column(length = 255)
+    private String path;
 
-    @Column(length = 1)
-    private Boolean isValidateReq;
+    @Column(length = 6)
+    private String method;
 
-    @Column(length = 1)
-    private Boolean isIdempotent;
 
     @OneToOne
     @JoinColumn(name = "resource_id", unique = true, nullable = false, updatable = false)
@@ -90,32 +89,24 @@ public class Service extends Entity {
         this.module = module;
     }
 
-    public Boolean getWriteLog() {
-        return isWriteLog;
+    public String getPath() {
+        return path;
     }
 
-    public void setWriteLog(Boolean writeLog) {
-        isWriteLog = writeLog;
-    }
-
-    public Boolean getValidateReq() {
-        return isValidateReq;
-    }
-
-    public void setValidateReq(Boolean validateReq) {
-        isValidateReq = validateReq;
-    }
-
-    public Boolean getIdempotent() {
-        return isIdempotent;
-    }
-
-    public void setIdempotent(Boolean idempotent) {
-        isIdempotent = idempotent;
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public Resource getResource() {
         return resource;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
     }
 
     public void setResource(Resource resource) {

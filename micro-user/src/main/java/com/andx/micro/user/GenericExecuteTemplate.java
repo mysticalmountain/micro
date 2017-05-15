@@ -7,7 +7,7 @@ import com.andx.micro.api.core.execute.ExecuteTemplate;
 import com.andx.micro.api.core.module.idempotent.Idempotent;
 import com.andx.micro.api.core.module.idempotent.IdempotentProcessor;
 import com.andx.micro.api.core.module.service.Service;
-import com.andx.micro.api.core.module.service.ServiceProcessor;
+import com.andx.micro.api.core.module.service.SampleService;
 import com.andx.micro.api.core.module.validator.Validator;
 import com.andx.micro.api.core.module.validator.ValidatorProcessor;
 import com.andx.micro.api.log.Log;
@@ -23,8 +23,8 @@ import org.springframework.stereotype.Component;
 /**
  * Created by andongxu on 17-2-6.
  */
-@Component
-public class GenericExecuteTemplate implements ExecuteTemplate<Request, ServiceProcessor<Request, Response>, Response> {
+//@Component
+public class GenericExecuteTemplate implements ExecuteTemplate<Request, SampleService<Request, Response>, Response> {
 
     private Log log = Log4jLogFactory.getLogFactory().getLog(this.getClass());
 
@@ -47,7 +47,7 @@ public class GenericExecuteTemplate implements ExecuteTemplate<Request, ServiceP
     @Qualifier("genericIdempotentProcessor")
     private IdempotentProcessor<Request, Response> genericIdempotentProcessor;
 
-    public Response execute(Request request, ServiceProcessor<Request, Response> serviceProcessor, Object... args) {
+    public Response execute(Request request, SampleService<Request, Response> serviceProcessor, Object... args) {
         long begin = System.currentTimeMillis();
         log.info("begin execute service [" + request.getServiceId() + "] requestId:" + request.getRequestId());
         try {

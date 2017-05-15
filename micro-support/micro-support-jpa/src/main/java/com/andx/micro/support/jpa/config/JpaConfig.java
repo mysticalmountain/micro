@@ -13,10 +13,14 @@ import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.Database;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.PersistenceContext;
 import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
@@ -25,10 +29,13 @@ import java.util.Map;
  * Created by andongxu on 17-1-5.
  */
 @Configuration
+//@EnableTransactionManagement
 public class JpaConfig {
 
     @Autowired
     private Environment env;
+//    @PersistenceContext
+//    private EntityManager em;
 
     @Bean
     @ConfigurationProperties(prefix = "spring.datasource")
@@ -39,18 +46,18 @@ public class JpaConfig {
 
 
     @Bean
-    public JpaTransactionManager transactionManager() {
+    public PlatformTransactionManager transactionManager() {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setEntityManagerFactory(entityManagerFactory());
         return jpaTransactionManager;
     }
 
-    @Bean
-    public TransactionTemplate transactionTemplate() {
-        TransactionTemplate transactionTemplate = new TransactionTemplate();
-        transactionTemplate.setTransactionManager(transactionManager());
-        return transactionTemplate;
-    }
+//    @Bean
+//    public TransactionTemplate transactionTemplate() {
+//        TransactionTemplate transactionTemplate = new TransactionTemplate();
+//        transactionTemplate.setTransactionManager(transactionManager());
+//        return transactionTemplate;
+//    }
 
     @Bean
     public EntityManagerFactory entityManagerFactory() {
@@ -83,7 +90,7 @@ public class JpaConfig {
         return properties;
     }
 
-    private String [] getEntityPackage() {
+    private String[] getEntityPackage() {
         String packages = env.getProperty("jpa.entity.package", String.class);
         return packages.split(",");
     }

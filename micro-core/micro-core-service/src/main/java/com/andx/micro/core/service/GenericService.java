@@ -6,7 +6,7 @@ import com.andx.micro.api.core.dto.Request;
 import com.andx.micro.api.core.dto.Response;
 import com.andx.micro.api.core.module.service.Service;
 import com.andx.micro.api.core.module.service.ServiceException;
-import com.andx.micro.api.core.module.service.ServiceProcessor;
+import com.andx.micro.api.core.module.service.SampleService;
 import com.andx.micro.api.log.Log;
 import com.andx.micro.core.log.log4j.Log4jLogFactory;
 
@@ -32,8 +32,8 @@ public class GenericService implements Service<Request, Response> {
     public Response service(Request request, Processor<Request, Response> processor, Object... args) throws ServiceException {
         long begin = System.currentTimeMillis();
         try {
-            if (processor instanceof ServiceProcessor) {
-                return ((ServiceProcessor<Request, Response>) processor).process(request, args);
+            if (processor instanceof SampleService) {
+                return ((SampleService<Request, Response>) processor).process(request, args);
             }
             return null;
         } finally {

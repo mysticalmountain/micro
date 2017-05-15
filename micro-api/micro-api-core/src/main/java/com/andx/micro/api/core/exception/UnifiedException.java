@@ -36,8 +36,21 @@ public class UnifiedException extends Exception {
         this.message = message;
     }
 
+    public UnifiedException(String message, Throwable cause) {
+        super(message, cause);
+        this.message = message;
+    }
     public UnifiedException(String message) {
         super(message);
         this.message = message;
+    }
+
+    public UnifiedException (Throwable cause) {
+        super(cause);
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
     }
 }

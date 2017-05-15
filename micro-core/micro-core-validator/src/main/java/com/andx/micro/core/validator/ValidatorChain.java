@@ -3,7 +3,7 @@ package com.andx.micro.core.validator;
 import com.andx.micro.api.core.chain.GenericChain;
 import com.andx.micro.api.core.dto.Request;
 import com.andx.micro.api.core.dto.Response;
-import com.andx.micro.api.core.module.service.ServiceProcessor;
+import com.andx.micro.api.core.module.service.SampleService;
 import com.andx.micro.api.core.module.validator.Validator;
 import com.andx.micro.api.core.module.validator.ValidatorException;
 import com.andx.micro.api.core.module.validator.ValidatorProcessor;
@@ -24,7 +24,7 @@ public class ValidatorChain<I extends Request, O extends Response> extends Gener
         this.validatorProcessor = validatorProcessor;
     }
 
-    public O chain(I request, ServiceProcessor<I, O> processor, Object... args) {
+    public O chain(I request, SampleService<I, O> processor, Object... args) {
         long begin = System.currentTimeMillis();
         try {
             Response response = validator.validate(request, validatorProcessor, args);

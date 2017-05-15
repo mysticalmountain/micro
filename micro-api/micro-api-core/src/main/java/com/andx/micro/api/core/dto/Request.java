@@ -13,6 +13,8 @@ public class Request<T> implements Serializable {
     @NotNull(message = "不允许为空")
     private String requestId;
 
+    private String uri;
+
     @Valid
     private T data;
 
@@ -34,6 +36,14 @@ public class Request<T> implements Serializable {
 
     public T getData() {
         return data;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri(String uri) {
+        this.uri = uri;
     }
 
     public void setData(T data) {

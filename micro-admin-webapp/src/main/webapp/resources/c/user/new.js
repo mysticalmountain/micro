@@ -8,16 +8,23 @@ $(document).ready(function () {
 
     $("#loading").show();
     $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json",
-        url: "http://www.micro.com:8082/service/queryRole",
+        url: "http://www.micro.com/permission/service/roles",
         data: dataJson,
         dataType: 'json',
         success: function (data) {
-            $("#roles").empty();
-            $.each(data.data, function (i, item) {
-                $("#roles").append("<label class='checkbox-inline'><input type='checkbox' name='roleIds' value='" + item.id +  "'>" + item.name + "</label>");
-            });
+            $("#success").hide();
+            $("#fail").hide();
+            if (data.success == true) {
+                $("#roles").empty();
+                $.each(data.data, function (i, item) {
+                    $("#roles").append("<label class='checkbox-inline'><input type='checkbox' name='roleIds' value='" + item.id +  "'>" + item.name + "</label>");
+                });
+            } else {
+                $("#fail").html(data.errorMessage);
+                $("#fail").show();
+            }
             $("#loading").hide();
         }
     });
@@ -49,19 +56,22 @@ $(document).ready(function () {
             name: $("#name").val(),
             username: $("#username").val(),
             userType: 'PERSONAL',
+        }
+        var data = {
+            userDto: userDto,
             profileDto: profileDto,
             authorityDto: authorityDto,
             roleDtos: roleDtos
         };
         var reqData = {
             requestId: '' + new Date().getTime(),
-            data: userDto
+            data: data
         };
         var dataJson = JSON.stringify(reqData);
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "http://localhost:8081/service/editUser",
+            url: "http://www.micro.com/user/service/users",
             data: dataJson,
             dataType: 'json',
             success: function (data) {

@@ -19,6 +19,10 @@ public class ValidatorException extends UnifiedException {
         super(type, message, cause);
     }
 
+    public ValidatorException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public ValidatorException(ExceptionType type, String message) {
         super(type, message);
     }
