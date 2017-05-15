@@ -17,5 +17,10 @@
             <artifactId>spring-aop</artifactId>
             <version>4.2.5.RELEASE</version>
         </dependency>
+        <dependency>
+            <groupId>andx</groupId>
+            <artifactId>micro-api-core</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

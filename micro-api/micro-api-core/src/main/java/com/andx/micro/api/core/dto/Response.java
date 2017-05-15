@@ -93,4 +93,15 @@ public class Response<T> implements Serializable, Cloneable {
         return response;
     }
 
+    @Override
+    public String toString() {
+        return "Response{" +
+                "serviceId='" + serviceId + '\'' +
+                ", requestId='" + requestId + '\'' +
+                ", success=" + success +
+                ", errorCode='" + errorCode + '\'' +
+                ", errorMessage='" + errorMessage + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

@@ -14,17 +14,17 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class DeleteRoleServiceTest extends AppTest {
 
-    @Autowired
-    private DeleteRoleService deleteRoleService;
+//    @Autowired
+//    private DeleteRoleService deleteRoleService;
 
-    @Test
-    public void success() throws ServiceException {
-        BaseRequest request = new BaseRequest();
-        IdDto idDto = new IdDto();
-        idDto.setId(Long.valueOf(10000003));
-        request.setData(idDto);
-        Response response = deleteRoleService.process(request);
-        Assert.assertNotNull(response);
-        Assert.assertTrue(response.getSuccess());
-    }
+//    @Test
+//    public void success() throws ServiceException {
+//        BaseRequest request = new BaseRequest();
+//        IdDto idDto = new IdDto();
+//        idDto.setId(Long.valueOf(10000003));
+//        request.setData(idDto);
+//        Response response = deleteRoleService.process(request);
+//        Assert.assertNotNull(response);
+//        Assert.assertTrue(response.getSuccess());
+//    }
 }

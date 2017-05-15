@@ -8,10 +8,11 @@ $(document).ready(function () {
 
     $("#loading").show();
     $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: "http://www.micro.com:8082/service/queryService",
-        data: dataJson,
+        type: "GET",
+        url: "http://www.micro.com/permission/service/permissions/service",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Accept", "application/json; charset=utf-8");
+        },
         dataType: 'json',
         success: function (data) {
             $("#success").hide();
@@ -25,6 +26,16 @@ $(document).ready(function () {
                 $("#services").append("<tr><td><input type='checkbox' name='permissionIds' value='" + item.permissionId + "'/>" + item.permissionId + "</td><td>" + item.code + "</td><td>" + item.content + "</td><td>" + item.system + "</td><td>" + item.module + "</td></tr>");
             })
             $("#loading").hide();
+        }
+    });
+
+    $("#checkAll").change(function () {
+        if ($(this).attr('checked') == null) {
+            $(this).attr('checked', true);
+            $("input[name='permissionIds']").attr("checked", true);
+        } else {
+            $(this).attr('checked', false);
+            $("input[name='permissionIds']").attr("checked", false);
         }
     });
 
@@ -46,8 +57,14 @@ $(document).ready(function () {
         var dataJson = JSON.stringify(reqData);
         $.ajax({
             type: "POST",
-            contentType: "application/json",
-            url: "http://www.micro.com:8082/service/editRole",
+            url: "http://www.micro.com/permission/service/roles",
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader("Accept", "application/json; charset=utf-8");
+            },
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
             data: dataJson,
             dataType: 'json',
             success: function (data) {

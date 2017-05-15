@@ -6,7 +6,7 @@ import com.andx.micro.api.core.dto.Response;
 import com.andx.micro.api.core.module.idempotent.Idempotent;
 import com.andx.micro.api.core.module.idempotent.IdempotentException;
 import com.andx.micro.api.core.module.idempotent.IdempotentProcessor;
-import com.andx.micro.api.core.module.service.ServiceProcessor;
+import com.andx.micro.api.core.module.service.SampleService;
 import com.andx.micro.api.log.Log;
 import com.andx.micro.core.log.log4j.Log4jLogFactory;
 
@@ -24,7 +24,7 @@ public class IdempotentChain extends GenericChain<Request, Response> {
     }
 
 
-    public Response chain(Request request, ServiceProcessor<Request, Response> processor, Object... args) {
+    public Response chain(Request request, SampleService<Request, Response> processor, Object... args) {
         Response response = null;
         boolean isStorage = false;
         try {

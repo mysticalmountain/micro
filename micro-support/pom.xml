@@ -16,6 +16,7 @@
         <module>micro-support-jpa</module>
         <module>micro-support-web</module>
         <module>micro-support-dubbo</module>
+        <module>micro-support-session</module>
     </modules>
 
 

@@ -1,5 +1,6 @@
 package com.andx.micro.permission.repository;
 
+import com.andx.micro.permission.model.Resource;
 import com.andx.micro.permission.model.Service;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -11,5 +12,7 @@ import org.springframework.stereotype.Repository;
 public interface ServiceRepository extends JpaRepository<Service, Long> {
 
     public Service findByCode(String code);
+
+    public Service findByResource(Resource resource);
 
 }

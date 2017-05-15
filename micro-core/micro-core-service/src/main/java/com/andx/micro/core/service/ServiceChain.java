@@ -5,7 +5,7 @@ import com.andx.micro.api.core.dto.Request;
 import com.andx.micro.api.core.dto.Response;
 import com.andx.micro.api.core.module.service.Service;
 import com.andx.micro.api.core.module.service.ServiceException;
-import com.andx.micro.api.core.module.service.ServiceProcessor;
+import com.andx.micro.api.core.module.service.SampleService;
 import com.andx.micro.api.log.Log;
 import com.andx.micro.core.log.log4j.Log4jLogFactory;
 
@@ -20,7 +20,7 @@ public class ServiceChain extends GenericChain<Request, Response> {
         this.service = service;
     }
 
-    public Response chain(Request request, ServiceProcessor<Request, Response> processor, Object... args) {
+    public Response chain(Request request, SampleService<Request, Response> processor, Object... args) {
         try {
             Response response = service.service(request, processor, args);
             if (response.getSuccess() == true) {

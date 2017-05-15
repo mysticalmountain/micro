@@ -14,6 +14,8 @@ public class ProfileDto implements Serializable{
 
 //    @Pattern(regexp = "^([1-9]{1})([0-9]{0,2})$", message = "[1-9][0-9][0-9]")
 //    @Pattern(regexp = "^/d$", message = "[1-9][0-9][0-9]")
+    private Long id;
+
     @Max(200)
     @Min(1)
     private Integer age;
@@ -25,7 +27,14 @@ public class ProfileDto implements Serializable{
     @Pattern(regexp = "(\\w|[\\u4E00-\\u9FA5]){1,32}", message = "格式:(\\w|[\\u4E00-\\u9FA5]){1,128}")
     private String address;
 
-    private UserDto userDto;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+    //    private UserDto userDto;
 
     public Integer getAge() {
         return age;
@@ -51,11 +60,11 @@ public class ProfileDto implements Serializable{
         this.address = address;
     }
 
-    public UserDto getUserDto() {
-        return userDto;
-    }
+//    public UserDto getUserDto() {
+//        return userDto;
+//    }
 
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
-    }
+//    public void setUserDto(UserDto userDto) {
+//        this.userDto = userDto;
+//    }
 }

@@ -1,5 +1,8 @@
 package com.andx.micro.permission.dto.service;
 
+import com.andx.micro.permission.dto.permission.ResourceDto;
+import com.andx.micro.permission.model.Resource;
+
 import java.io.Serializable;
 
 /**
@@ -11,11 +14,17 @@ public class ServiceDto implements Serializable {
 
     private String code;
 
+    private String path;
+
     private String content;
 
     private String system;
 
     private String module;
+
+    private String method;
+
+    private ResourceDto resourceDto;
 
     public Long getId() {
         return id;
@@ -51,6 +60,30 @@ public class ServiceDto implements Serializable {
 
     public String getModule() {
         return module;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public void setMethod(String method) {
+        this.method = method;
+    }
+
+    public ResourceDto getResourceDto() {
+        return resourceDto;
+    }
+
+    public void setResourceDto(ResourceDto resourceDto) {
+        this.resourceDto = resourceDto;
     }
 
     public void setModule(String module) {

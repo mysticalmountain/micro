@@ -25,15 +25,6 @@ public class UserDto implements Serializable{
     @NotNull(message = "不允许为空")
     private UserType userType;
 
-    @Valid
-    private ProfileDto profileDto;
-
-    @Valid
-    private AuthorityDto authorityDto;
-
-    @Valid
-    private Set<RolebakDto> roleDtos;
-
     public Long getId() {
         return id;
     }
@@ -66,27 +57,68 @@ public class UserDto implements Serializable{
         this.userType = userType;
     }
 
-    public ProfileDto getProfileDto() {
-        return profileDto;
-    }
+    //    @Valid
+//    private ProfileDto profileDto;
 
-    public void setProfileDto(ProfileDto profileDto) {
-        this.profileDto = profileDto;
-    }
+//    @Valid
+//    private AuthorityDto authorityDto;
 
-    public AuthorityDto getAuthorityDto() {
-        return authorityDto;
-    }
+//    @Valid
+//    private Set<RolebakDto> roleDtos;
 
-    public void setAuthorityDto(AuthorityDto authorityDto) {
-        this.authorityDto = authorityDto;
-    }
+//    public Long getId() {
+//        return id;
+//    }
 
-    public Set<RolebakDto> getRoleDtos() {
-        return roleDtos;
-    }
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
-    public void setRoleDtos(Set<RolebakDto> roleDtos) {
-        this.roleDtos = roleDtos;
-    }
+//    public String getName() {
+//        return name;
+//    }
+
+//    public void setName(String name) {
+//        this.name = name;
+//    }
+
+//    public String getUsername() {
+//        return username;
+//    }
+
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
+
+//    public UserType getUserType() {
+//        return userType;
+//    }
+
+//    public void setUserType(UserType userType) {
+//        this.userType = userType;
+//    }
+
+//    public ProfileDto getProfileDto() {
+//        return profileDto;
+//    }
+
+//    public void setProfileDto(ProfileDto profileDto) {
+//        this.profileDto = profileDto;
+//    }
+
+//    public AuthorityDto getAuthorityDto() {
+//        return authorityDto;
+//    }
+
+//    public void setAuthorityDto(AuthorityDto authorityDto) {
+//        this.authorityDto = authorityDto;
+//    }
+
+//    public Set<RolebakDto> getRoleDtos() {
+//        return roleDtos;
+//    }
+
+//    public void setRoleDtos(Set<RolebakDto> roleDtos) {
+//        this.roleDtos = roleDtos;
+//    }
 }

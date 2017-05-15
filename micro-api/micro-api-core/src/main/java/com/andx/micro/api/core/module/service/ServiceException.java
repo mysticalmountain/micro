@@ -16,6 +16,9 @@ public class ServiceException extends UnifiedException {
     public ServiceException(ExceptionType type, String message, Throwable cause) {
         super(type, message, cause);
     }
+    public ServiceException(String message, Throwable cause) {
+        super(message, cause);
+    }
 
     public ServiceException(ExceptionType type, String message) {
         super(type, message);
@@ -23,6 +26,10 @@ public class ServiceException extends UnifiedException {
 
     public ServiceException(String message) {
         super(message);
+    }
+
+    public ServiceException(Throwable cause) {
+        super(cause);
     }
 }
 

@@ -9,7 +9,7 @@ public class PermissionDto implements Serializable {
 
     private Long id;
 
-    private ResourceDto resource;
+    private ResourceDto resourceDto;
 
     public Long getId() {
         return id;
@@ -19,11 +19,11 @@ public class PermissionDto implements Serializable {
         this.id = id;
     }
 
-    public ResourceDto getResource() {
-        return resource;
+    public ResourceDto getResourceDto() {
+        return resourceDto;
     }
 
-    public void setResource(ResourceDto resource) {
-        this.resource = resource;
+    public void setResourceDto(ResourceDto resourceDto) {
+        this.resourceDto = resourceDto;
     }
 }

@@ -14,37 +14,44 @@ $(document).ready(function () {
 
     $("#loading").show();
     $.ajax({
-        type: "POST",
+        type: "GET",
         contentType: "application/json",
-        url: "http://www.micro.com:8082/service/queryRole",
-        data: dataJson,
+        url: "http://www.micro.com/permission/service/roles/" + roleId,
         dataType: 'json',
         success: function (res) {
             $("#success").hide();
             $("#fail").hide();
-            if (data.success == false) {
+            if (res.success == false) {
                 $("#fail").html(res.errorMessage);
                 $("#fail").show();
             } else {
-                $("#name").val(res.data[0].name);
+                $("#name").val(res.data.name);
+            }
+        }
+    });
 
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "http://www.micro.com/permission/service/permissions/service",
+        dataType: 'json',
+        success: function (data) {
+            $("#success").hide();
+            $("#fail").hide();
+            if (data.success == false) {
+                $("#fail").html(data.errorMessage);
+                $("#fail").show();
+            } else {
                 $.ajax({
-                    type: "POST",
+                    type: "GET",
                     contentType: "application/json",
-                    url: "http://www.micro.com:8082/service/queryService",
-                    data: dataJson,
+                    url: "http://www.micro.com/permission/service/roles/" + roleId + "/permissions",
                     dataType: 'json',
-                    success: function (data) {
-                        $("#success").hide();
-                        $("#fail").hide();
-                        if (data.success == false) {
-                            $("#fail").html(data.errorMessage);
-                            $("#fail").show();
-                        }
+                    success: function (res) {
                         $("#services").empty();
                         $.each(data.data, function (i, item) {
                             var checked = false;
-                            $.each(res.data[0].permissions, function (j, ps) {
+                            $.each(res.data, function (j, ps) {
                                 if (ps.id == item.permissionId) {
                                     checked = true;
                                 }
@@ -57,8 +64,18 @@ $(document).ready(function () {
                         })
                     }
                 });
-                $("#loading").hide();
             }
+            $("#loading").hide();
+        }
+    });
+
+    $("#checkAll").change(function () {
+        if ($(this).attr('checked') == null) {
+            $(this).attr('checked', true);
+            $("input[name='permissionIds']").attr("checked", true);
+        } else {
+            $(this).attr('checked', false);
+            $("input[name='permissionIds']").attr("checked", false);
         }
     });
 
@@ -80,9 +97,9 @@ $(document).ready(function () {
         };
         var dataJson = JSON.stringify(reqData);
         $.ajax({
-            type: "POST",
+            type: "PATCH",
             contentType: "application/json",
-            url: "http://www.micro.com:8082/service/editRole",
+            url: "http://www.micro.com/permission/service/roles/" + roleId,
             data: dataJson,
             dataType: 'json',
             success: function (data) {

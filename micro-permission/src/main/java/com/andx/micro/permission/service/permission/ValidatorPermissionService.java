@@ -4,7 +4,7 @@ import com.andx.micro.api.core.Service;
 import com.andx.micro.api.core.dto.Request;
 import com.andx.micro.api.core.dto.Response;
 import com.andx.micro.api.core.module.service.ServiceException;
-import com.andx.micro.api.core.module.service.ServiceProcessor;
+import com.andx.micro.api.core.module.service.SampleService;
 import com.andx.micro.core.util.Constant;
 import com.andx.micro.permission.dto.PermissionRequest;
 import com.andx.micro.permission.dto.permission.ValidatorPermissionDto;
@@ -22,9 +22,9 @@ import java.util.Set;
 /**
  * Created by andongxu on 17-2-21.
  */
-@Component
-@Service(code = "validatorPermission", name = "验证权限")
-public class ValidatorPermissionService implements ServiceProcessor<Request<ValidatorPermissionDto>, Response> {
+//@Component
+//@Service(code = "validatorPermission", name = "验证权限")
+public class ValidatorPermissionService implements SampleService<Request<ValidatorPermissionDto>, Response> {
 
     @Autowired
     private RoleRepository roleRepository;
@@ -88,4 +88,5 @@ public class ValidatorPermissionService implements ServiceProcessor<Request<Vali
     public Response handlerException(Request<ValidatorPermissionDto> validatorPermissionDtoRequest, Exception e, Object... args) {
         return new Response(e.getMessage(), false);
     }
+
 }

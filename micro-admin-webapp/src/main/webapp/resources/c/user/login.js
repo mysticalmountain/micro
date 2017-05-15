@@ -17,7 +17,11 @@ $(document).ready(function () {
         $.ajax({
             type: "POST",
             contentType: "application/json",
-            url: "http://localhost:8081/service/login",
+            url: "http://www.micro.com/user/service/login",
+            xhrFields: {
+                withCredentials: true
+            },
+            crossDomain: true,
             data: dataJson,
             dataType: 'json',
             success: function (data) {

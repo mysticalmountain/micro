@@ -12,44 +12,79 @@ $(document).ready(function () {
     };
     var dataJson = JSON.stringify(data);
 
-    $("#loading").show();
+    // $("#loading").show();
     $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: "http://www.micro.com:8081/service/queryUserDetail",
-        data: dataJson,
+        type: "GET",
+        url: "http://www.micro.com/user/service/users/" + userId,
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Accept", "application/json; charset=utf-8");
+        },
         dataType: 'json',
         success: function (data) {
             $("#name").val(data.data.name);
             $("#username").val(data.data.username);
-            $("#age").val(data.data.profileDto.age);
-            $("#address").val(data.data.profileDto.address);
+        }
+    });
+    // 查询用户简介
+    $.ajax({
+        type: "GET",
+        url: "http://www.micro.com/user/service/users/" + userId + "/profiles",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Accept", "application/json; charset=utf-8");
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true,
+        dataType: 'json',
+        success: function (data) {
+            $("#profileId").val(data.data.id);
+            $("#age").val(data.data.age);
+            $("#address").val(data.data.address);
             var options = $('select option');
             $.each(options, function () {
-                if ($(this).val() == data.data.profileDto.sex) {
+                if ($(this).val() == data.data.sex) {
                     $(this).attr('selected', true);
                 }
             });
-            $("#accountNo").val(data.data.authorityDtos[0].accountNo);
-            $("#password").val(data.data.authorityDtos[0].password);
-            $("#roles").empty();
+        }
+    });
+    //查询用户权限
+    $.ajax({
+        type: "GET",
+        url: "http://www.micro.com/user/service/users/" + userId + "/authorities",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Accept", "application/json; charset=utf-8");
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true,
+        dataType: 'json',
+        success: function (data) {
+            $("#authorityId").val(data.data[0].id);
+            $("#accountNo").val(data.data[0].accountNo);
+            $("#password").val(data.data[0].password);
+        }
+    });
 
-            //初始化角色
-            var reqData = {
-                requestId: '' + new Date().getTime()
-            };
-            var dataJson = JSON.stringify(reqData);
-            $.ajax({
-                type: "POST",
-                contentType: "application/json",
-                url: "http://www.micro.com:8082/service/queryRole",
-                data: dataJson,
-                dataType: 'json',
-                success: function (res) {
-                    if (res.success == true) {
+    //查询用户角色
+    $.ajax({
+        type: "GET",
+        contentType: "application/json",
+        url: "http://www.micro.com/permission/service/roles",
+        dataType: 'json',
+        success: function (res) {
+            if (res.success == true) {
+                $.ajax({
+                    type: "GET",
+                    contentType: "application/json",
+                    url: "http://www.micro.com/user/service/users/" + userId + "/roles",
+                    dataType: 'json',
+                    success: function (res1) {
                         $.each(res.data, function (i, item) {
                             var isCheck = false;
-                            $.each(data.data.rolebakDtos, function (i, itemUser) {
+                            $.each(res1.data, function (i, itemUser) {
                                 if (item.id == itemUser.roleId) {
                                     isCheck = true;
                                 }
@@ -60,23 +95,23 @@ $(document).ready(function () {
                                 $("#roles").append("<label class='checkbox-inline'><input type='checkbox' name='roleIds' value='" + item.id + "'>" + item.name + "</label>");
                             }
                         });
-                    }
-                }
 
-            });
-            $("#loading").hide();
+                    }
+                });
+            }
         }
     });
-
 
     $("#save").click(function () {
         $("#loading").show();
         var profileDto = {
+            id: $("#profileId").val(),
             age: $("#age").val(),
             sex: $("#sex").val(),
             address: $("#address").val()
         };
         var authorityDto = {
+            id: $("#authorityId").val(),
             accountNo: $("#accountNo").val(),
             password: $("#password").val()
         };
@@ -92,23 +127,27 @@ $(document).ready(function () {
             roleDtos.push(roleDto);
         });
         var userDto = {
+
             id: userId,
             name: $("#name").val(),
             username: $("#username").val(),
             userType: 'PERSONAL',
+        };
+        var editUserDto = {
+            userDto: userDto,
             profileDto: profileDto,
             authorityDto: authorityDto,
             roleDtos: roleDtos
         };
         var reqData = {
             requestId: '' + new Date().getTime(),
-            data: userDto
+            data: editUserDto
         };
         var dataJson = JSON.stringify(reqData);
         $.ajax({
-            type: "POST",
+            type: "PATCH",
             contentType: "application/json",
-            url: "http://localhost:8081/service/editUser",
+            url: "http://www.micro.com/user/service/users/" + userId,
             data: dataJson,
             dataType: 'json',
             success: function (data) {

@@ -12,10 +12,15 @@ $(document).ready(function () {
     var dataJson = JSON.stringify(reqData);
     $("#loading").show();
     $.ajax({
-        type: "POST",
-        contentType: "application/json",
-        url: "http://www.micro.com:8082/service/queryRole",
-        data: dataJson,
+        type: "GET",
+        url: "http://www.micro.com/permission/service/roles",
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Accept", "application/json; charset=utf-8");
+        },
+        xhrFields: {
+            withCredentials: true
+        },
+        crossDomain: true,
         dataType: 'json',
         success: function (data) {
             if (data.success == false) {
@@ -39,10 +44,16 @@ $(document).ready(function () {
                     };
                     var dataJson = JSON.stringify(reqData);
                     $.ajax({
-                        type: "POST",
-                        contentType: "application/json",
-                        url: "http://www.micro.com:8082/service/deleteRole",
-                        data: dataJson,
+                        type: "DELETE",
+                        url: "http://www.micro.com/permission/service/roles/" + $(this).val(),
+                        // beforeSend: function (xhr) {
+                        //     xhr.setRequestHeader("Accept", "application/json; charset=utf-8");
+                        // },
+                        // xhrFields: {
+                        //     withCredentials: true
+                        // },
+                        // crossDomain: true,
+                        // data: dataJson,
                         dataType: 'json',
                         success: function (data) {
                             $("#success").hide();
